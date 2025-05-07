@@ -38,6 +38,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestClient;
 
+import static org.springframework.ai.qianfan.api.QianFanConstants.PROVIDER_NAME;
+
 /**
  * Embedding {@link AutoConfiguration Auto-configuration} for QianFan Embedding Model.
  *
@@ -46,7 +48,7 @@ import org.springframework.web.client.RestClient;
  */
 @AutoConfiguration(after = { RestClientAutoConfiguration.class, SpringAiRetryAutoConfiguration.class })
 @ConditionalOnClass(QianFanApi.class)
-@ConditionalOnProperty(name = SpringAIModelProperties.EMBEDDING_MODEL, havingValue = SpringAIModels.QIANFAN,
+@ConditionalOnProperty(name = SpringAIModelProperties.EMBEDDING_MODEL, havingValue = PROVIDER_NAME,
 		matchIfMissing = true)
 @EnableConfigurationProperties({ QianFanConnectionProperties.class, QianFanEmbeddingProperties.class })
 public class QianFanEmbeddingAutoConfiguration {

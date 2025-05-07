@@ -20,9 +20,6 @@ import io.micrometer.observation.ObservationRegistry;
 
 import org.springframework.ai.chat.observation.ChatModelObservationConvention;
 import org.springframework.ai.model.SpringAIModelProperties;
-import org.springframework.ai.model.SpringAIModels;
-import org.springframework.ai.model.function.DefaultFunctionCallbackResolver;
-import org.springframework.ai.model.function.FunctionCallbackResolver;
 import org.springframework.ai.qianfan.QianFanChatModel;
 import org.springframework.ai.qianfan.api.QianFanApi;
 import org.springframework.ai.retry.autoconfigure.SpringAiRetryAutoConfiguration;
@@ -33,13 +30,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.client.RestClientAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestClient;
+
+import static org.springframework.ai.qianfan.api.QianFanConstants.PROVIDER_NAME;
 
 /**
  * Chat {@link AutoConfiguration Auto-configuration} for QianFan Chat Model.
@@ -49,7 +47,7 @@ import org.springframework.web.client.RestClient;
  */
 @AutoConfiguration(after = { RestClientAutoConfiguration.class, SpringAiRetryAutoConfiguration.class })
 @ConditionalOnClass(QianFanApi.class)
-@ConditionalOnProperty(name = SpringAIModelProperties.CHAT_MODEL, havingValue = SpringAIModels.QIANFAN,
+@ConditionalOnProperty(name = SpringAIModelProperties.CHAT_MODEL, havingValue = PROVIDER_NAME,
 		matchIfMissing = true)
 @EnableConfigurationProperties({ QianFanConnectionProperties.class, QianFanChatProperties.class })
 public class QianFanChatAutoConfiguration {
@@ -57,10 +55,10 @@ public class QianFanChatAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public QianFanChatModel qianFanChatModel(QianFanConnectionProperties commonProperties,
-			QianFanChatProperties chatProperties, ObjectProvider<RestClient.Builder> restClientBuilderProvider,
-			RetryTemplate retryTemplate, ResponseErrorHandler responseErrorHandler,
-			ObjectProvider<ObservationRegistry> observationRegistry,
-			ObjectProvider<ChatModelObservationConvention> observationConvention) {
+											 QianFanChatProperties chatProperties, ObjectProvider<RestClient.Builder> restClientBuilderProvider,
+											 RetryTemplate retryTemplate, ResponseErrorHandler responseErrorHandler,
+											 ObjectProvider<ObservationRegistry> observationRegistry,
+											 ObjectProvider<ChatModelObservationConvention> observationConvention) {
 
 		var qianFanApi = qianFanApi(chatProperties.getBaseUrl(), commonProperties.getBaseUrl(),
 				chatProperties.getApiKey(), commonProperties.getApiKey(), chatProperties.getSecretKey(),
@@ -76,8 +74,8 @@ public class QianFanChatAutoConfiguration {
 	}
 
 	private QianFanApi qianFanApi(String baseUrl, String commonBaseUrl, String apiKey, String commonApiKey,
-			String secretKey, String commonSecretKey, RestClient.Builder restClientBuilder,
-			ResponseErrorHandler responseErrorHandler) {
+								  String secretKey, String commonSecretKey, RestClient.Builder restClientBuilder,
+								  ResponseErrorHandler responseErrorHandler) {
 
 		String resolvedBaseUrl = StringUtils.hasText(baseUrl) ? baseUrl : commonBaseUrl;
 		Assert.hasText(resolvedBaseUrl, "QianFan base URL must be set");
@@ -91,13 +89,4 @@ public class QianFanChatAutoConfiguration {
 		return new QianFanApi(resolvedBaseUrl, resolvedApiKey, resolvedSecretKey, restClientBuilder,
 				responseErrorHandler);
 	}
-
-	@Bean
-	@ConditionalOnMissingBean
-	public FunctionCallbackResolver springAiFunctionManager(ApplicationContext context) {
-		DefaultFunctionCallbackResolver manager = new DefaultFunctionCallbackResolver();
-		manager.setApplicationContext(context);
-		return manager;
-	}
-
 }

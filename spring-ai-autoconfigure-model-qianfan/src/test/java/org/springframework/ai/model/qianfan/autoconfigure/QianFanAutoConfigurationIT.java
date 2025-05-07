@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariables;
+import org.springframework.ai.image.ImageOptionsBuilder;
 import reactor.core.publisher.Flux;
 
 import org.springframework.ai.chat.messages.UserMessage;
@@ -106,7 +107,7 @@ public class QianFanAutoConfigurationIT {
 			.withPropertyValues("spring.ai.qianfan.image.options.size=1024x1024")
 			.run(context -> {
 				QianFanImageModel imageModel = context.getBean(QianFanImageModel.class);
-				ImageResponse imageResponse = imageModel.call(new ImagePrompt("forest"));
+				ImageResponse imageResponse = imageModel.call(new ImagePrompt("forest", ImageOptionsBuilder.builder().style("Base").width(1024).height(1024).build()));
 				assertThat(imageResponse.getResults()).hasSize(1);
 				assertThat(imageResponse.getResult().getOutput().getUrl()).isNull();
 				assertThat(imageResponse.getResult().getOutput().getB64Json()).isNotEmpty();
