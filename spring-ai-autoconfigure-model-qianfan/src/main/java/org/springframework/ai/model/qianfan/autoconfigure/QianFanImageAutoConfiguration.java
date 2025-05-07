@@ -49,8 +49,7 @@ import static org.springframework.ai.qianfan.api.QianFanConstants.PROVIDER_NAME;
  */
 @AutoConfiguration(after = { RestClientAutoConfiguration.class, SpringAiRetryAutoConfiguration.class })
 @ConditionalOnClass(QianFanApi.class)
-@ConditionalOnProperty(name = SpringAIModelProperties.IMAGE_MODEL, havingValue = PROVIDER_NAME,
-		matchIfMissing = true)
+@ConditionalOnProperty(name = SpringAIModelProperties.IMAGE_MODEL, havingValue = PROVIDER_NAME, matchIfMissing = true)
 @EnableConfigurationProperties({ QianFanConnectionProperties.class, QianFanImageProperties.class })
 public class QianFanImageAutoConfiguration {
 

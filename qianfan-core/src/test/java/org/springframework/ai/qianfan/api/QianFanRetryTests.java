@@ -182,7 +182,8 @@ public class QianFanRetryTests {
 			.willThrow(new TransientAiException("Transient Error 2"))
 			.willReturn(ResponseEntity.of(Optional.of(expectedResponse)));
 
-		var result = this.imageModel.call(new ImagePrompt(List.of(new ImageMessage("Image Message")), ImageOptionsBuilder.builder().build()));
+		var result = this.imageModel
+			.call(new ImagePrompt(List.of(new ImageMessage("Image Message")), ImageOptionsBuilder.builder().build()));
 
 		assertThat(result).isNotNull();
 		assertThat(result.getResult().getOutput().getB64Json()).isEqualTo("b64");
@@ -194,8 +195,8 @@ public class QianFanRetryTests {
 	public void qianFanImageNonTransientError() {
 		given(this.qianFanImageApi.createImage(isA(QianFanImageRequest.class)))
 			.willThrow(new RuntimeException("Transient Error 1"));
-		assertThrows(RuntimeException.class,
-				() -> this.imageModel.call(new ImagePrompt(List.of(new ImageMessage("Image Message")), ImageOptionsBuilder.builder().build())));
+		assertThrows(RuntimeException.class, () -> this.imageModel
+			.call(new ImagePrompt(List.of(new ImageMessage("Image Message")), ImageOptionsBuilder.builder().build())));
 	}
 
 	private static class TestRetryListener implements RetryListener {

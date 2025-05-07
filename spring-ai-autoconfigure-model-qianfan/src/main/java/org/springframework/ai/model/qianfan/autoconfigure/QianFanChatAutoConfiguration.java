@@ -47,18 +47,17 @@ import static org.springframework.ai.qianfan.api.QianFanConstants.PROVIDER_NAME;
  */
 @AutoConfiguration(after = { RestClientAutoConfiguration.class, SpringAiRetryAutoConfiguration.class })
 @ConditionalOnClass(QianFanApi.class)
-@ConditionalOnProperty(name = SpringAIModelProperties.CHAT_MODEL, havingValue = PROVIDER_NAME,
-		matchIfMissing = true)
+@ConditionalOnProperty(name = SpringAIModelProperties.CHAT_MODEL, havingValue = PROVIDER_NAME, matchIfMissing = true)
 @EnableConfigurationProperties({ QianFanConnectionProperties.class, QianFanChatProperties.class })
 public class QianFanChatAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
 	public QianFanChatModel qianFanChatModel(QianFanConnectionProperties commonProperties,
-											 QianFanChatProperties chatProperties, ObjectProvider<RestClient.Builder> restClientBuilderProvider,
-											 RetryTemplate retryTemplate, ResponseErrorHandler responseErrorHandler,
-											 ObjectProvider<ObservationRegistry> observationRegistry,
-											 ObjectProvider<ChatModelObservationConvention> observationConvention) {
+			QianFanChatProperties chatProperties, ObjectProvider<RestClient.Builder> restClientBuilderProvider,
+			RetryTemplate retryTemplate, ResponseErrorHandler responseErrorHandler,
+			ObjectProvider<ObservationRegistry> observationRegistry,
+			ObjectProvider<ChatModelObservationConvention> observationConvention) {
 
 		var qianFanApi = qianFanApi(chatProperties.getBaseUrl(), commonProperties.getBaseUrl(),
 				chatProperties.getApiKey(), commonProperties.getApiKey(), chatProperties.getSecretKey(),
@@ -74,8 +73,8 @@ public class QianFanChatAutoConfiguration {
 	}
 
 	private QianFanApi qianFanApi(String baseUrl, String commonBaseUrl, String apiKey, String commonApiKey,
-								  String secretKey, String commonSecretKey, RestClient.Builder restClientBuilder,
-								  ResponseErrorHandler responseErrorHandler) {
+			String secretKey, String commonSecretKey, RestClient.Builder restClientBuilder,
+			ResponseErrorHandler responseErrorHandler) {
 
 		String resolvedBaseUrl = StringUtils.hasText(baseUrl) ? baseUrl : commonBaseUrl;
 		Assert.hasText(resolvedBaseUrl, "QianFan base URL must be set");
@@ -89,4 +88,5 @@ public class QianFanChatAutoConfiguration {
 		return new QianFanApi(resolvedBaseUrl, resolvedApiKey, resolvedSecretKey, restClientBuilder,
 				responseErrorHandler);
 	}
+
 }

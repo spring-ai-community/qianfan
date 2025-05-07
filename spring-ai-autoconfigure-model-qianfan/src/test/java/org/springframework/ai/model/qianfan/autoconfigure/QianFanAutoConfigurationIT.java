@@ -107,7 +107,8 @@ public class QianFanAutoConfigurationIT {
 			.withPropertyValues("spring.ai.qianfan.image.options.size=1024x1024")
 			.run(context -> {
 				QianFanImageModel imageModel = context.getBean(QianFanImageModel.class);
-				ImageResponse imageResponse = imageModel.call(new ImagePrompt("forest", ImageOptionsBuilder.builder().style("Base").width(1024).height(1024).build()));
+				ImageResponse imageResponse = imageModel.call(new ImagePrompt("forest",
+						ImageOptionsBuilder.builder().style("Base").width(1024).height(1024).build()));
 				assertThat(imageResponse.getResults()).hasSize(1);
 				assertThat(imageResponse.getResult().getOutput().getUrl()).isNull();
 				assertThat(imageResponse.getResult().getOutput().getB64Json()).isNotEmpty();
