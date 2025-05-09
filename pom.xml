@@ -69,6 +69,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!-- Project modules -->
             <dependency>
@@ -76,17 +83,10 @@
                 <artifactId>qianfan-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-retry</artifactId>
-                <version>${spring-ai.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-autoconfigure-retry</artifactId>
-                <version>${spring-ai.version}</version>
+                <artifactId>spring-ai-autoconfigure-model-qianfan</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
