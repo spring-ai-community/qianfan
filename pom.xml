@@ -57,7 +57,7 @@
         <maven-assembly-plugin.version>3.7.0</maven-assembly-plugin.version>
         <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
         <kotlin.version>1.9.25</kotlin.version>
-        <spring-ai.version>1.0.0-M8</spring-ai.version>
+        <spring-ai.version>1.0.0-RC1</spring-ai.version>
     </properties>
 
     <dependencyManagement>
